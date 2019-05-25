@@ -14,7 +14,7 @@ public class Proprietario extends Utilizador {
 
 
     private int numeroAutomovel;
-    private List<Carro> carros;
+    public List<Carro> carros;
     private Map<Integer, Aluguer> alugueresP;
     private float classificacao;
     private String informacao;
@@ -34,8 +34,8 @@ public class Proprietario extends Utilizador {
     /**
      * Construtor com argumentos
      */
-    public Proprietario(int id, String email, String nome, String password, String morada, LocalDate dataDeNascimento) {
-        super(id, email, nome, password, morada, dataDeNascimento);
+    public Proprietario(int nif, String email, String nome, String password, String morada, LocalDate dataDeNascimento) {
+        super(nif, email, nome, password, morada, dataDeNascimento);
         this.numeroAutomovel = 0;
         this.carros = null;
         this.alugueresP = null;
@@ -46,8 +46,8 @@ public class Proprietario extends Utilizador {
     /**
      * Construtor com argumentos
      */
-    public Proprietario(int id, String email, String nome, String password, String morada, LocalDate dataDeNascimento, int numeroAutomovel, List<Carro> carros, Map<Integer, Aluguer> alugueresP, float classificacao, String informacao) {
-        super(id, email, nome, password, morada, dataDeNascimento);
+    public Proprietario(int nif, String email, String nome, String password, String morada, LocalDate dataDeNascimento, int numeroAutomovel, List<Carro> carros, Map<Integer, Aluguer> alugueresP, float classificacao, String informacao) {
+        super(nif, email, nome, password, morada, dataDeNascimento);
         this.numeroAutomovel = numeroAutomovel;
         this.carros = carros;
         this.alugueresP = alugueresP;
@@ -191,13 +191,12 @@ public class Proprietario extends Utilizador {
      * Retorna o objeto em modo string
      */
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Proprietario{");
-        sb.append("numeroAutomovel=").append(numeroAutomovel);
-        sb.append(", carros=").append(carros);
-        sb.append(", alugueresP=").append(alugueresP);
-        sb.append(", classificacao=").append(classificacao);
-        sb.append(", informacao='").append(informacao).append('\'');
-        sb.append('}');
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Numero de Automoveis: ").append(numeroAutomovel).append("\n");
+        sb.append("Carros: ").append(carros).append("\n");
+        sb.append("Alugueres: ").append(alugueresP).append("\n");
+        sb.append("Classificacao: ").append(classificacao).append("\n");
+        sb.append("Informacao: ").append(informacao).append("\n");
         return sb.toString();
     }
 

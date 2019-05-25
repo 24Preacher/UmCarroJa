@@ -11,65 +11,55 @@ import java.util.Objects;
  */
 public class Carro {
 
-    private int idCarro;
+    private String matricula;
     private float deposito;
-    private int idProprietario;
+    private int nifProprietario;
     private float localizacaoCX;
     private float localizacaoCY;
     private float precoKm;
     private float consumoKm;
-    private float autonomia;
-    private String informacao;
     private boolean disponivel;
     private int tipo;
     private float velocidade;
     private float classificacao;
     private Map<Integer, Aluguer> alugueresCarro;
-    private float kmPercorridos;
-    private int tempoUso;
 
     /**
      * Construtor sem argumentos
      */
     public Carro(){
-        this.idCarro = 1;
+        this.matricula = "";
         this.deposito = 0;
-        this.idProprietario = 1;
+        this.nifProprietario = 1;
         this.localizacaoCX = 0;
         this.localizacaoCY = 0;
         this.precoKm = 0;
         this.consumoKm = 0;
-        this.autonomia = 0;
-        this.informacao = "";
         this.disponivel = true;
         this.tipo = 0;
         this.velocidade = 0;
         this.classificacao = 0;
         this.alugueresCarro = new HashMap<Integer, Aluguer>();
-        this.kmPercorridos = 0;
-        this.tempoUso = 0;
+
     }
 
     /**
      * Construtor com argumentos
      */
-    public Carro(int idCarro, float deposito, int idProprietario, float localizacaoCX, float localizacaoCY, float precoKm, float consumoKm, float autonomia, String informacao, boolean disponivel, int tipo, float velocidade, float classificacao, Map<Integer, Aluguer> alugueresCarro, float faturado, float kmPercorridos, int tempoUso) {
-        this.idCarro = idCarro;
+    public Carro(String matricula, float deposito, int nifProprietario, float localizacaoCX, float localizacaoCY, float precoKm, float consumoKm, boolean disponivel, int tipo, float velocidade, float classificacao, Map<Integer, Aluguer> alugueresCarro) {
+        this.matricula = matricula;
         this.deposito = deposito;
-        this.idProprietario = idProprietario;
+        this.nifProprietario = nifProprietario;
         this.localizacaoCX = localizacaoCX;
         this.localizacaoCY = localizacaoCY;
         this.precoKm = precoKm;
         this.consumoKm = consumoKm;
-        this.autonomia = autonomia;
-        this.informacao = informacao;
         this.disponivel = disponivel;
         this.tipo = tipo;
         this.velocidade = velocidade;
         this.classificacao = classificacao;
         this.alugueresCarro = alugueresCarro;
-        this.kmPercorridos = kmPercorridos;
-        this.tempoUso = tempoUso;
+
     }
 
     /**
@@ -77,30 +67,27 @@ public class Carro {
      * r    Carro a copiar
      */
     public Carro (Carro r){
-        this.idCarro = r.idCarro;
+        this.matricula = r.matricula;
         this.deposito = r.deposito;
-        this.idProprietario = r.idProprietario;
+        this.nifProprietario = r.nifProprietario;
         this.localizacaoCX = r.localizacaoCX;
         this.localizacaoCY = r.localizacaoCY;
         this.precoKm = r.precoKm;
         this.consumoKm = r.consumoKm;
-        this.autonomia = r.autonomia;
-        this.informacao = r.informacao;
         this.disponivel = r.disponivel;
         this.tipo = r.tipo;
         this.velocidade = r.velocidade;
         this.classificacao = r.classificacao;
         this.setAlugueresCarro(r.alugueresCarro);
-        this.kmPercorridos = r.kmPercorridos;
-        this.tempoUso = r.tempoUso;
+
     }
 
 
     /**
      * Retorna o id de um carro
      */
-    public int getIdCarro() {
-        return this.idCarro;
+    public String getMatricula() {
+        return this.matricula;
     }
 
 
@@ -115,8 +102,8 @@ public class Carro {
     /**
      * Retorna o id de um proprietário
      */
-    public int getIdProprietario() {
-        return this.idProprietario;
+    public int nifProprietario() {
+        return this.nifProprietario;
     }
 
 
@@ -151,19 +138,6 @@ public class Carro {
         return this.consumoKm;
     }
 
-    /**
-     * Retorna a autonomia de um carro
-     */
-    public float getAutonomia() {
-        return this.autonomia;
-    }
-
-    /**
-     * Retorna a informação de um carro
-     */
-    public String getInformacao() {
-        return this.informacao;
-    }
 
     /**
      * Retorna a disponibilidade de um carro
@@ -209,24 +183,9 @@ public class Carro {
     }
 
     /**
-     * Retorna os  de um carro
-     */
-    public float getKmPercorridos() {
-        return this.kmPercorridos;
-    }
-
-    /**
-     * Retorna a o tempo de uso de um carro
-     */
-    public int getTempoUso() {
-        return this.tempoUso;
-    }
-
-    /**
      * Método que altera o id de um carro
      */
-    public void setIdCarro(int idCarro) {
-        this.idCarro = idCarro;
+    public void setMatricula(String matricula) { this.matricula = matricula;
     }
 
     /**
@@ -239,8 +198,8 @@ public class Carro {
     /**
      * Método que altera o id de um proprietario
      */
-    public void setIdProprietario(int idProprietario) {
-        this.idProprietario = idProprietario;
+    public void setNifProprietario(int nifProprietario) {
+        this.nifProprietario = nifProprietario;
     }
 
     /**
@@ -269,20 +228,6 @@ public class Carro {
      */
     public void setConsumoKm(float consumoKm) {
         this.consumoKm = consumoKm;
-    }
-
-    /**
-     *Método que altera a autonomia de um carro
-     */
-    public void setAutonomia(float autonomia) {
-        this.autonomia = autonomia;
-    }
-
-    /**
-     *Método que altera a informação de um carro
-     */
-    public void setInformacao(String informacao) {
-        this.informacao = informacao;
     }
 
     /**
@@ -325,41 +270,23 @@ public class Carro {
     }
 
     /**
-     *Método que altera os KMs percorridos de um carro
-     */
-    public void setKmPercorridos(float kmPercorridos) {
-        this.kmPercorridos = kmPercorridos;
-    }
-
-    /**
-     *Método que altera o tempo de uso de um carro
-     */
-    public void setTempoUso(int tempoUso) {
-        this.tempoUso = tempoUso;
-    }
-
-    /**
      * Método toString do objeto.
      * Retorna o objeto em modo string
      */
     public String toString() {
         final StringBuilder sb = new StringBuilder("Carro{");
-        sb.append("idCarro=").append(idCarro);
+        sb.append("matricula=").append(matricula);
         sb.append(", deposito=").append(deposito);
-        sb.append(", idProprietario=").append(idProprietario);
+        sb.append(", nifProprietario=").append(nifProprietario);
         sb.append(", localizacaoCX=").append(localizacaoCX);
         sb.append(", localizacaoCY=").append(localizacaoCY);
         sb.append(", precoKm=").append(precoKm);
         sb.append(", consumoKm=").append(consumoKm);
-        sb.append(", autonomia=").append(autonomia);
-        sb.append(", informacao='").append(informacao).append('\'');
         sb.append(", disponivel=").append(disponivel);
         sb.append(", tipo=").append(tipo);
         sb.append(", velocidade=").append(velocidade);
         sb.append(", classificacao=").append(classificacao);
         sb.append(", alugueresCarro=").append(alugueresCarro);
-        sb.append(", kmPercorridos=").append(kmPercorridos);
-        sb.append(", tempoUso=").append(tempoUso);
         sb.append('}');
         return sb.toString();
     }
@@ -372,22 +299,18 @@ public class Carro {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Carro carro = (Carro) o;
-        return idCarro == carro.idCarro &&
+        return Objects.equals(matricula, carro.matricula) &&
                 Float.compare(carro.deposito, deposito) == 0 &&
-                idProprietario == carro.idProprietario &&
+                nifProprietario == carro.nifProprietario &&
                 Float.compare(carro.localizacaoCX, localizacaoCX) == 0 &&
                 Float.compare(carro.localizacaoCY, localizacaoCY) == 0 &&
                 Float.compare(carro.precoKm, precoKm) == 0 &&
                 Float.compare(carro.consumoKm, consumoKm) == 0 &&
-                Float.compare(carro.autonomia, autonomia) == 0 &&
                 disponivel == carro.disponivel &&
                 tipo == carro.tipo &&
                 Float.compare(carro.velocidade, velocidade) == 0 &&
                 Float.compare(carro.classificacao, classificacao) == 0 &&
-                Float.compare(carro.kmPercorridos, kmPercorridos) == 0 &&
-                Objects.equals(informacao, carro.informacao) &&
-                Objects.equals(alugueresCarro, carro.alugueresCarro) &&
-                Objects.equals(tempoUso, carro.tempoUso);
+                Objects.equals(alugueresCarro, carro.alugueresCarro);
     }
 
     /**

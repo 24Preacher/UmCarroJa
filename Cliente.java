@@ -144,11 +144,10 @@ public class Cliente extends Utilizador {
      * Retorna o objeto em modo string
      */
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Cliente{");
-        sb.append("localizacaoX=").append(localizacaoX);
-        sb.append(", localizacaoY=").append(localizacaoY);
-        sb.append(", alugueresCliente=").append(alugueresCliente);
-        sb.append('}');
+        final StringBuilder sb = new StringBuilder();
+        sb.append("LocalizacaoX: ").append(localizacaoX).append("\n");
+        sb.append("LocalizacaoY: ").append(localizacaoY).append("\n");
+        sb.append("Alugueres do cliente: ").append(alugueresCliente).append("\n");
         return sb.toString();
     }
 

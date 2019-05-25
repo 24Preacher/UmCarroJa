@@ -1,32 +1,40 @@
+import Exceptions.CarroExistente;
+import Exceptions.CarroInexistente;
 import Exceptions.DadosIncorretos;
 import Exceptions.UtilizadorExistente;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UmCarroJa {
 
-    private Map<Integer, Carro> carros;
+    private Map<String, Carro> carros;
     private Map<Integer, Utilizador> utilizadores;
     private Utilizador utilizador;
 
     public UmCarroJa(){
-        this.carros = new HashMap<Integer, Carro>();
+        this.carros = new HashMap<String, Carro>();
         this.utilizadores = new HashMap<Integer, Utilizador>();
         this.utilizador = null;
     }
 
     public UmCarroJa(Map<Integer, Carro> c, Map<Integer, Utilizador> u){
         this.utilizador = null;
-        this.carros = new HashMap<Integer, Carro>();
+        this.carros = new HashMap<String, Carro>();
         this.utilizadores = new HashMap<Integer, Utilizador>();
         for (Carro a : c.values())
-            this.carros.put(a.getIdCarro(), a.clone());
+            this.carros.put(a.getMatricula(), a.clone());
         for (Utilizador b : u.values())
             this.utilizadores.put(b.getNif(), b.clone());
+    }
+
+    public Utilizador getUtilizador() {
+        return this.utilizador;
     }
 
     public void registaUtilizador(Utilizador u) throws UtilizadorExistente {
@@ -34,6 +42,19 @@ public class UmCarroJa {
             throw new UtilizadorExistente();
         }
         else this.utilizadores.put(u.getNif(),u);
+    }
+
+    public void registaCarro(Carro c) throws CarroExistente {
+        Proprietario p = (Proprietario) utilizador;
+        List<Carro> a = p.getCarros();
+        if(this.carros.containsKey(c.getMatricula())){
+            throw new CarroExistente();
+        }
+        else {
+            this.carros.put(c.getMatricula(),c);
+            a.add(c);
+            p.setCarros(a);
+        }
     }
 
     public void login(int nif, String password) throws DadosIncorretos {
@@ -61,6 +82,21 @@ public class UmCarroJa {
         o.writeObject(this);
         o.flush();
         o.close();
+    }
+
+    public List<Carro> getCarros() throws CarroInexistente {
+        //if(this.utilizador instanceof Proprietario) {
+            Proprietario p = (Proprietario) utilizador;
+            if (p.getCarros().size() != 0) {
+                List<Carro> c = new ArrayList<Carro>();
+                for (Carro i : p.getCarros()) {
+                    Carro novo = (Carro) i;
+                    c.add(novo.clone());
+                }
+                return c;
+            }
+       // }
+        else throw new CarroInexistente();
     }
 
 }
