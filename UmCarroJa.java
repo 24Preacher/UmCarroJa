@@ -49,6 +49,13 @@ public class UmCarroJa {
         this.utilizador = null;
     }
 
+    public int getTipoUtilizador(){
+        if(utilizador instanceof Cliente)
+            return 0;
+        if(utilizador instanceof Proprietario)
+            return 1;
+        return 2;
+    }
     public void gravaEstado() throws IOException {
         ObjectOutputStream o = new ObjectOutputStream (new FileOutputStream("UmCarroJÁ.data"));
         o.writeObject(this);

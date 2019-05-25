@@ -4,9 +4,9 @@ Tell the reader (someone who does not know anything about this project)
 all he/she needs to know. The comments should usually include at least:
 ------------------------------------------------------------------------
 
-PROJECT TITLE:
-PURPOSE OF PROJECT:
-VERSION or DATE:
-HOW TO START THIS PROJECT:
-AUTHORS:
-USER INSTRUCTIONS:
+PROJECT TITLE: UmCarroJá!
+PURPOSE OF PROJECT: Projeto de POO
+VERSION or DATE: 2018/2019
+HOW TO START THIS PROJECT: Ter motivação
+AUTHORS: Zet, Golias
+USER INSTRUCTIONS: Terminal
