@@ -46,7 +46,7 @@ public class Carro {
     /**
      * Construtor com argumentos
      */
-    public Carro(String matricula, float deposito, int nifProprietario, float localizacaoCX, float localizacaoCY, float precoKm, float consumoKm, boolean disponivel, int tipo, float velocidade, float classificacao, Map<Integer, Aluguer> alugueresCarro) {
+    public Carro(String matricula, float deposito, int nifProprietario, float localizacaoCX, float localizacaoCY, float precoKm, float consumoKm, boolean disponivel, int tipo, float velocidade) {
         this.matricula = matricula;
         this.deposito = deposito;
         this.nifProprietario = nifProprietario;
@@ -57,8 +57,8 @@ public class Carro {
         this.disponivel = disponivel;
         this.tipo = tipo;
         this.velocidade = velocidade;
-        this.classificacao = classificacao;
-        this.alugueresCarro = alugueresCarro;
+        this.classificacao = 0;
+        this.alugueresCarro = new HashMap<Integer, Aluguer>();
 
     }
 

@@ -14,7 +14,7 @@ public class Proprietario extends Utilizador {
 
 
     private int numeroAutomovel;
-    public List<Carro> carros;
+    private List<Carro> carros;
     private Map<Integer, Aluguer> alugueresP;
     private float classificacao;
     private String informacao;
@@ -103,7 +103,10 @@ public class Proprietario extends Utilizador {
      * Retorna a lista de carros
      */
     public List<Carro> getCarros() {
-        return carros;
+        List<Carro> aux = new ArrayList<Carro>();
+        for(Carro c : this.carros)
+            aux.add(c);
+        return aux;
     }
 
     /**

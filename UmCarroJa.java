@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UmCarroJa {
 
-    private Map<String, Carro> carros;
-    private Map<Integer, Utilizador> utilizadores;
+    public Map<String, Carro> carros;
+    public Map<Integer, Utilizador> utilizadores;
     private Utilizador utilizador;
 
     public UmCarroJa(){
@@ -37,23 +38,31 @@ public class UmCarroJa {
         return this.utilizador;
     }
 
+    public void setCarros(List<Carro> carros) {
+        Proprietario p = (Proprietario) this.utilizador;
+        p.setCarros(carros);
+        this.utilizador = p;
+    }
+
     public void registaUtilizador(Utilizador u) throws UtilizadorExistente {
         if(this.utilizadores.containsKey(u.getNif())){
             throw new UtilizadorExistente();
         }
-        else this.utilizadores.put(u.getNif(),u);
+        else {
+            this.utilizadores.put(u.getNif(), u);
+        }
     }
 
     public void registaCarro(Carro c) throws CarroExistente {
-        Proprietario p = (Proprietario) utilizador;
-        List<Carro> a = p.getCarros();
         if(this.carros.containsKey(c.getMatricula())){
             throw new CarroExistente();
         }
         else {
             this.carros.put(c.getMatricula(),c);
-            a.add(c);
-            p.setCarros(a);
+            Proprietario p = (Proprietario) this.utilizador;
+            List<Carro> aux = p.getCarros();
+            aux.add(c.clone());
+            System.out.println(carros);
         }
     }
 
@@ -86,13 +95,14 @@ public class UmCarroJa {
 
     public List<Carro> getCarros() throws CarroInexistente {
         //if(this.utilizador instanceof Proprietario) {
-            Proprietario p = (Proprietario) utilizador;
+            Proprietario p = (Proprietario) this.utilizador;
             if (p.getCarros().size() != 0) {
                 List<Carro> c = new ArrayList<Carro>();
                 for (Carro i : p.getCarros()) {
                     Carro novo = (Carro) i;
                     c.add(novo.clone());
                 }
+                this.utilizador = p;
                 return c;
             }
        // }
