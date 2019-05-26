@@ -60,8 +60,7 @@ public class UmCarroJa {
         else {
             this.carros.put(c.getMatricula(),c);
             Proprietario p = (Proprietario) this.utilizador;
-            List<Carro> aux = p.getCarros();
-            aux.add(c.clone());
+            p.addCarro(c);
             System.out.println(carros);
         }
     }

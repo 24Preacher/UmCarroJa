@@ -37,8 +37,8 @@ public class Proprietario extends Utilizador {
     public Proprietario(int nif, String email, String nome, String password, String morada, LocalDate dataDeNascimento) {
         super(nif, email, nome, password, morada, dataDeNascimento);
         this.numeroAutomovel = 0;
-        this.carros = null;
-        this.alugueresP = null;
+        this.carros = new ArrayList<Carro>();
+        this.alugueresP = new TreeMap<Integer, Aluguer>();
         this.classificacao = 0;
         this.informacao = "";
     }
@@ -209,5 +209,9 @@ public class Proprietario extends Utilizador {
      */
     public Proprietario clone()  {
         return new Proprietario(this);
+    }
+
+    public void addCarro(Carro c){
+        this.carros.add(c.clone());
     }
 }
