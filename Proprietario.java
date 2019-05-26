@@ -1,5 +1,3 @@
- 
-
 import java.time.LocalDate;
 import java.util.*;
 import java.lang.Cloneable;
@@ -217,6 +215,10 @@ public class Proprietario extends Utilizador {
 
     public void altDeposito(int n, float deposito){
         this.carros.get(n).setDeposito(deposito);
+    }
+    
+    public void altPrecoKm(int n, float precoKm){
+        this.carros.get(n).setPrecoKm(precoKm);
     }
 
 

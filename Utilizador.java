@@ -1,5 +1,3 @@
- 
-
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -179,4 +177,3 @@ public abstract class Utilizador implements Serializable{
      */
     public abstract Utilizador clone();
 }
-

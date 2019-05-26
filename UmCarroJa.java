@@ -4,8 +4,10 @@ import Exceptions.DadosIncorretos;
 import Exceptions.UtilizadorExistente;
 
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,31 +88,42 @@ public class UmCarroJa {
         return 2;
     }
     public void gravaEstado() throws IOException {
-        ObjectOutputStream o = new ObjectOutputStream (new FileOutputStream("UmCarroJÁ.data"));
+        ObjectOutputStream o = new ObjectOutputStream (new FileOutputStream("UmCarroJa.data"));
         o.writeObject(this);
         o.flush();
         o.close();
     }
+    
+    public static UmCarroJa initApp() throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("UmCarroJa.data"));
+        UmCarroJa ucj = (UmCarroJa) ois.readObject();
+
+        ois.close();
+        return ucj;
+    }
 
     public List<Carro> getCarros() throws CarroInexistente {
-        //if(this.utilizador instanceof Proprietario) {
-            Proprietario p = (Proprietario) this.utilizador;
-            if (p.getCarros().size() != 0) {
-                List<Carro> c = new ArrayList<Carro>();
+        Proprietario p = (Proprietario) this.utilizador;
+        if (p.getCarros().size() != 0) {
+             List<Carro> c = new ArrayList<Carro>();
                 for (Carro i : p.getCarros()) {
                     Carro novo = (Carro) i;
                     c.add(novo.clone());
                 }
-                this.utilizador = p;
-                return c;
-            }
-       // }
+             this.utilizador = p;
+             return c;
+        }
         else throw new CarroInexistente();
     }
 
     public void alteraDeposito(int n, float deposito){
         Proprietario p = (Proprietario) this.utilizador;
         p.altDeposito(n,deposito);
+    }
+    
+    public void alteraPrecoKm(int n, float precoKm){
+        Proprietario p = (Proprietario) this.utilizador;
+        p.altPrecoKm(n,precoKm);
     }
 
     public void consultarClassificacao(){

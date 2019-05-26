@@ -3,6 +3,7 @@ import Exceptions.CarroInexistente;
 import Exceptions.DadosIncorretos;
 import Exceptions.UtilizadorExistente;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.lang.Math;
 
 public class UmCarroJaApp implements Serializable {
     private UmCarroJaApp() {
@@ -34,20 +36,50 @@ public class UmCarroJaApp implements Serializable {
 
         System.out.println("Bem Vindo!");
         carregaMenu();
+        carregaFicheiro();
+        //carregaEstado();
 
         executaMenuInicial();
-
+/*
         try {
             umCarroJa.gravaEstado();
         } catch (IOException e) {
             System.out.println("Erro ao guardar");
+        }*/
+    }
+    private static void carregaFicheiro(){
+        try {
+            FileReader fr = new FileReader("/home/preacher/UmCarroJa/UmCarroJa.data");
+
+            int i;
+            while ((i = fr.read()) != -1)
+                System.out.print((char) i);
+        } catch (IOException e) {
+            System.out.println("Não encontrou ficheiro");
         }
     }
-
+    private static void carregaEstado() {
+        try {
+            umCarroJa = UmCarroJa.initApp();
+        }
+        catch(IOException e) {
+            umCarroJa = new UmCarroJa();
+            System.out.println("Não foi possível ler os dados guardados!\nErro de leitura!");
+        }
+        catch(ClassNotFoundException e) {
+            umCarroJa = new UmCarroJa();
+            System.out.println("Não foi possível ler os dados guardados!\nFicheiro com formato desconhecido!");
+        }
+        catch(ClassCastException e) {
+            umCarroJa = new UmCarroJa();
+            System.out.println("Não foi possível ler os dados guardados!\nErro de formato!");
+        }
+    }
+    
     private static void carregaMenu() {
         String[] inicial = {"Login", "Registar Utilizador"};
         String[] cliente = {"Consultar perfil", "Alterar perfil", "Alugar um carro", "Alterar localização", "Historial de Alugueres"};
-        String[] proprietario = {"Consultar perfil", "Alterar perfil", "Registar um carro", "Alterar deposito do carro", "Consultar classificação", "Historial de Alugueres"};
+        String[] proprietario = {"Consultar perfil", "Alterar perfil", "Registar um carro", "Alterar deposito de um carro", "Alterar preço/km de um carro", "Consultar classificação", "Historial de Alugueres"};
         String[] aluguertipo = {"Alugar um carro a gasolina", "Alugar um carro elétrico", "Alugar um carro híbrido"};
         String[] aluguercriterio = {"Alugar por distancia", "Alugar por preço", "Alugar por consumo"};
         menuInicial = new Menu(inicial);
@@ -105,8 +137,11 @@ public class UmCarroJaApp implements Serializable {
                 case 4:
                     alteraDeposito();
                     break;
-                case 5: consultarClassificacao(); break;
-                //case 6: historialAlugueres(); break;
+                case 5:
+                    alteraPrecoKm();
+                    break;
+                case 6: consultarClassificacao(); break;
+                //case 7: historialAlugueres(); break;
                 case 0:
                     logout();
                     break;
@@ -118,9 +153,9 @@ public class UmCarroJaApp implements Serializable {
         do {
             menuAluguerTipo.executaMenu();
             switch (menuAluguerTipo.getOp()) {
-                case 1: alugaGasolina(); break;
-                case 2: alugaEletrico(); break;
-                case 3: alugaHibrido(); break;
+                //case 1: alugaGasolina(); break;
+                //case 2: alugaEletrico(); break;
+                //case 3: alugaHibrido(); break;
             }
         } while (menuAluguerTipo.getOp() != 0);
     }
@@ -261,7 +296,7 @@ public class UmCarroJaApp implements Serializable {
         int n, tipo, classificacao;
         boolean disponivel;
 
-        System.out.println("Matrícula ");
+        System.out.println("Matrícula: (No formato #######) ");
         matricula = sc.nextLine();
 
         System.out.println("Depósito atual: ");
@@ -327,6 +362,34 @@ public class UmCarroJaApp implements Serializable {
 
         umCarroJa.alteraDeposito(e-1, deposito);
     }
+    
+    private static void alteraPrecoKm() {
+        Scanner sc = new Scanner(System.in);
+        Carro c = new Carro();
+        List<Carro> carros = new ArrayList<Carro>();
+        int i = 1;
+        try {
+            carros = umCarroJa.getCarros();
+            for (Carro a : carros) {
+                System.out.println(i + " " + a.getMatricula());
+                i++;
+            }
+        } catch (CarroInexistente e) {
+            System.out.println(e.getMessage());
+        }
+
+        String escolha;
+        float precoKm;
+
+        System.out.println("Que carro deseja alterar?");
+        escolha = sc.nextLine();
+        int e = Integer.parseInt(escolha);
+
+        System.out.println("Preco/km atual: ");
+        precoKm = sc.nextFloat();
+
+        umCarroJa.alteraPrecoKm(e-1, precoKm);
+    }
 
     public static void consultarClassificacao(){
         umCarroJa.consultarClassificacao();
@@ -335,8 +398,9 @@ public class UmCarroJaApp implements Serializable {
     public static void alugarCarro(){
         Scanner sc = new Scanner(System.in);
         float x1, y1, x2, y2;
-        String  criterio;
-        int tipo;
+        int tipo, criterio;
+        double dist;
+        String matricula;
 
         System.out.println("Onde está?");
         System.out.println("X");
@@ -349,15 +413,56 @@ public class UmCarroJaApp implements Serializable {
         x2 = sc.nextFloat();
         System.out.println("Y");
         y2 = sc.nextFloat();
+        
+        dist = calcDist(x2,x1,y2,y1);
+        System.out.println("Esta a " + dist + " kms do destino.");
 
-        System.out.println("Que tipo carro quer?");
+        System.out.println("Que tipo de carro quer?");
         System.out.println("1 - Gasolina");
         System.out.println("2 - Elétrico");
         System.out.println("3 - Híbrido");
         tipo = sc.nextInt();
+        
+        if (tipo == 1) {
+            umCarroJa.carros.get(1);
+        } 
+        else if (tipo == 2) {
+            umCarroJa.carros.get(2);
+        }
+        else if (tipo == 3) {
+            umCarroJa.carros.get(3);
+        }
+        
+        System.out.println("Criterio do aluguer?");
+        System.out.println("1 - Alugar em funçao da distancia");
+        System.out.println("2 - Alugar em funçao do preço");
+        System.out.println("3 - Alugar pela matricula");
+        criterio = sc.nextInt();
+        
+        if (tipo == 1) {
+            umCarroJa.carros.get(1);
+        } 
+        else if (tipo == 2) {
+            umCarroJa.carros.get(2);
+        }
+        else if (tipo == 3) {
+            System.out.println("Matricula do carro desejado: ");
+            matricula = sc.nextLine();
+            umCarroJa.carros.get(matricula);
+        }
     }
-
-
+    
+    public static double calcDist(float a,float b, float c, float d){
+        double dist = Math.sqrt((a-b)*(a-b) + (c-d)*(c-d));
+        return dist;
+    }
+    public static TreeMap<Integer,Carro> ordenaDCarros(TreeMap<Integer, Carro> carros){
+        
+        return carros;
+    }
+    public static TreeMap<Integer,Carro> ordenaPCarros(TreeMap<Integer, Carro> carros){
+        
+        return carros;
+    }
 }
-
 

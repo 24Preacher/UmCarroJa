@@ -1,5 +1,3 @@
- 
-
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Objects;
@@ -159,5 +157,4 @@ public class Cliente extends Utilizador {
         return new Cliente(this);
     }
 }
-
 
