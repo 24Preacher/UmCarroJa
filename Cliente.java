@@ -32,7 +32,7 @@ public class Cliente extends Utilizador {
         super(id, email, nome, password, morada, dataDeNascimento);
         this.localizacaoX = 0;
         this.localizacaoY = 0;
-        this.alugueresCliente = null;
+        this.alugueresCliente = new TreeMap<Integer, Aluguer>();
     }
     /**
      * Construtor com argumentos

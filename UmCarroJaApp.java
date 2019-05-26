@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class UmCarroJaApp implements Serializable {
     private UmCarroJaApp() {
@@ -18,11 +19,11 @@ public class UmCarroJaApp implements Serializable {
     private static Menu menuInicial, menuCliente, menuProprietario, menuAluguerTipo, menuAluguerCriterio;
 
     public static void main(String[] args) {
-        Proprietario p = new Proprietario(263777464, "pedro98medeiros@gmail.com", "Preacher", "preacher", "Rua dos Peoes",LocalDate.parse("1998-09-18"), 0, null,null,0,"Olá");
-        Proprietario p2 = new Proprietario(1,"zet", "Zet", "zet", "Rua dos Peoes",LocalDate.parse("1998-09-18"), 0, null,null,0,"Olá");
+        Cliente c = new Cliente(2, "pedro98medeiros@gmail.com", "Preacher", "preacher", "Rua dos Peoes",LocalDate.parse("1998-09-18"), 0, 0, new TreeMap<Integer, Aluguer>());
+        Proprietario p2 = new Proprietario(1,"zet", "Zet", "zet", "Rua dos Peoes",LocalDate.parse("1998-09-18"), 0, new ArrayList<Carro>(),new TreeMap<Integer, Aluguer>(),0,"Olá");
 
 
-        Utilizador u = (Utilizador) p;
+        Utilizador u = (Utilizador) c;
         Utilizador u2 = (Utilizador) p2;
         try {
             umCarroJa.registaUtilizador(u);
@@ -33,9 +34,7 @@ public class UmCarroJaApp implements Serializable {
 
         System.out.println("Bem Vindo!");
         carregaMenu();
-        //new UmCarroJaApp();
-        //Proprietario p = new Proprietario(12345678,"antonio123@gmail.com","António Luis", "antonio123", "Rua do Antonio", LocalDate.parse("2000-12-12") , 0, null, null, 0, "Sou o António");
-        //0Proprietario p1 = (Proprietario) p;
+
         executaMenuInicial();
 
         try {
@@ -48,7 +47,7 @@ public class UmCarroJaApp implements Serializable {
     private static void carregaMenu() {
         String[] inicial = {"Login", "Registar Utilizador"};
         String[] cliente = {"Consultar perfil", "Alterar perfil", "Alugar um carro", "Alterar localização", "Historial de Alugueres"};
-        String[] proprietario = {"Consultar perfil", "Alterar perfil", "Registar um carro", "Alterar um registo", "Consultar classificação", "Historial de Alugueres"};
+        String[] proprietario = {"Consultar perfil", "Alterar perfil", "Registar um carro", "Alterar deposito do carro", "Consultar classificação", "Historial de Alugueres"};
         String[] aluguertipo = {"Alugar um carro a gasolina", "Alugar um carro elétrico", "Alugar um carro híbrido"};
         String[] aluguercriterio = {"Alugar por distancia", "Alugar por preço", "Alugar por consumo"};
         menuInicial = new Menu(inicial);
@@ -56,8 +55,6 @@ public class UmCarroJaApp implements Serializable {
         menuProprietario = new Menu(proprietario);
         menuAluguerTipo = new Menu(aluguertipo);
         menuAluguerCriterio = new Menu(aluguercriterio);
-
-
     }
 
     private static void executaMenuInicial() {
@@ -83,8 +80,7 @@ public class UmCarroJaApp implements Serializable {
                 case 2:
                     alteraPerfil();
                     break;
-                //case 3: alugarCarro(); break;
-                //case 4: alterarLocalização(); break;
+                case 3: alugarCarro(); break;
                 //case 5: historialAlugueres(); break;
                 case 0:
                     logout();
@@ -107,9 +103,9 @@ public class UmCarroJaApp implements Serializable {
                     registaCarro();
                     break;
                 case 4:
-                    alteraRegisto();
+                    alteraDeposito();
                     break;
-                //case 5: consultaClassificacao(); break;
+                case 5: consultarClassificacao(); break;
                 //case 6: historialAlugueres(); break;
                 case 0:
                     logout();
@@ -122,12 +118,9 @@ public class UmCarroJaApp implements Serializable {
         do {
             menuAluguerTipo.executaMenu();
             switch (menuAluguerTipo.getOp()) {
-                //case 1: alugaGasolina(); break;
-                //case 2: alugaEletrico(); break;
-                //case 3: alugaHibrido(); break;
-                case 0:
-                    logout();
-                    break;
+                case 1: alugaGasolina(); break;
+                case 2: alugaEletrico(); break;
+                case 3: alugaHibrido(); break;
             }
         } while (menuAluguerTipo.getOp() != 0);
     }
@@ -307,7 +300,7 @@ public class UmCarroJaApp implements Serializable {
 
     }
 
-    private static void alteraRegisto() {
+    private static void alteraDeposito() {
         Scanner sc = new Scanner(System.in);
         Carro c = new Carro();
         List<Carro> carros = new ArrayList<Carro>();
@@ -322,52 +315,49 @@ public class UmCarroJaApp implements Serializable {
             System.out.println(e.getMessage());
         }
 
-        String matricula, nifProprietario;
-        float deposito, localizacaoCX, localizacaoCY, precoKm, consumoKm, velocidade;
-        int n, tipo, classificacao;
-        boolean disponivel;
+        String escolha;
+        float deposito;
 
-        //System.out.println(carros);
-
-        System.out.println("Matrícula ");
-        matricula = sc.nextLine();
+        System.out.println("Que carro deseja alterar?");
+        escolha = sc.nextLine();
+        int e = Integer.parseInt(escolha);
 
         System.out.println("Depósito atual: ");
         deposito = sc.nextFloat();
 
-        System.out.println("Nif do proprietário: ");
-        nifProprietario = sc.nextLine();
-
-        System.out.println("Localizacão em X: ");
-        localizacaoCX = sc.nextFloat();
-
-        System.out.println("Localizacão em Y: ");
-        localizacaoCY = sc.nextFloat();
-
-        System.out.println("Preço por km: ");
-        precoKm = sc.nextFloat();
-
-        System.out.println("Consumo por km: ");
-        consumoKm = sc.nextFloat();
-
-        System.out.println("Disponível? (true/false) ");
-        disponivel = sc.nextBoolean();
-
-        System.out.println("Tipo de carro: ");
-        System.out.println("1 - Gasolina | 2 - Elétrico | 3 - Híbrido");
-        tipo = sc.nextInt();
-
-        n = Integer.parseInt(nifProprietario);
-        c.setMatricula(matricula);
-        c.setDeposito(deposito);
-        c.setNifProprietario(n);
-        c.setLocalizacaoCX(localizacaoCX);
-        c.setLocalizacaoCY(localizacaoCY);
-        c.setPrecoKm(precoKm);
-        c.setConsumoKm(consumoKm);
-        c.setDisponivel(disponivel);
-        c.setTipo(tipo);
+        umCarroJa.alteraDeposito(e-1, deposito);
     }
+
+    public static void consultarClassificacao(){
+        umCarroJa.consultarClassificacao();
+    }
+
+    public static void alugarCarro(){
+        Scanner sc = new Scanner(System.in);
+        float x1, y1, x2, y2;
+        String  criterio;
+        int tipo;
+
+        System.out.println("Onde está?");
+        System.out.println("X");
+        x1 = sc.nextFloat();
+        System.out.println("Y");
+        y1 = sc.nextFloat();
+
+        System.out.println("Onde deseja ir?");
+        System.out.println("X");
+        x2 = sc.nextFloat();
+        System.out.println("Y");
+        y2 = sc.nextFloat();
+
+        System.out.println("Que tipo carro quer?");
+        System.out.println("1 - Gasolina");
+        System.out.println("2 - Elétrico");
+        System.out.println("3 - Híbrido");
+        tipo = sc.nextInt();
+    }
+
+
 }
 
 

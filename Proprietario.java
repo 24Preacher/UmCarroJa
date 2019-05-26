@@ -214,4 +214,13 @@ public class Proprietario extends Utilizador {
     public void addCarro(Carro c){
         this.carros.add(c.clone());
     }
+
+    public void altDeposito(int n, float deposito){
+        this.carros.get(n).setDeposito(deposito);
+    }
+
+
+    public float calClassificacao() {
+        return (float) this.carros.stream().mapToDouble(Carro::getClassificacao).average().orElse(0);
+    }
 }

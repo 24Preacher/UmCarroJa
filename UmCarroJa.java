@@ -14,22 +14,22 @@ import java.util.stream.Collectors;
 
 public class UmCarroJa {
 
-    public Map<String, Carro> carros;
+    public Map<Integer, Carro> carros;
     public Map<Integer, Utilizador> utilizadores;
     private Utilizador utilizador;
 
     public UmCarroJa(){
-        this.carros = new HashMap<String, Carro>();
+        this.carros = new HashMap<Integer, Carro>();
         this.utilizadores = new HashMap<Integer, Utilizador>();
         this.utilizador = null;
     }
 
     public UmCarroJa(Map<Integer, Carro> c, Map<Integer, Utilizador> u){
         this.utilizador = null;
-        this.carros = new HashMap<String, Carro>();
+        this.carros = new HashMap<Integer, Carro>();
         this.utilizadores = new HashMap<Integer, Utilizador>();
         for (Carro a : c.values())
-            this.carros.put(a.getMatricula(), a.clone());
+            this.carros.put(a.getTipo(), a.clone());
         for (Utilizador b : u.values())
             this.utilizadores.put(b.getNif(), b.clone());
     }
@@ -58,7 +58,7 @@ public class UmCarroJa {
             throw new CarroExistente();
         }
         else {
-            this.carros.put(c.getMatricula(),c);
+            this.carros.put(c.getTipo(),c);
             Proprietario p = (Proprietario) this.utilizador;
             p.addCarro(c);
             System.out.println(carros);
@@ -108,4 +108,17 @@ public class UmCarroJa {
         else throw new CarroInexistente();
     }
 
+    public void alteraDeposito(int n, float deposito){
+        Proprietario p = (Proprietario) this.utilizador;
+        p.altDeposito(n,deposito);
+    }
+
+    public void consultarClassificacao(){
+        Proprietario p = (Proprietario) this.utilizador;
+        System.out.println(p.calClassificacao());
+    }
+
+    public Carro carroTipo(int n){
+        return this.carros.get(n);
+    }
 }
