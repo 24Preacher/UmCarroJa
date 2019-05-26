@@ -14,13 +14,13 @@ import java.util.TreeMap;
 import java.lang.Math;
 
 public class UmCarroJaApp implements Serializable {
-    private UmCarroJaApp() {
-    }
 
-    private static UmCarroJa umCarroJa = new UmCarroJa();
-    private static Menu menuInicial, menuCliente, menuProprietario, menuAluguerTipo, menuAluguerCriterio;
+    private UmCarroJa umCarroJa = new UmCarroJa();
+    private Menu menuInicial, menuCliente, menuProprietario, menuAluguerTipo, menuAluguerCriterio;
 
-    public static void main(String[] args) {
+    public UmCarroJaApp() {
+        this.umCarroJa = new UmCarroJa();
+
         Cliente c = new Cliente(2, "pedro98medeiros@gmail.com", "Preacher", "preacher", "Rua dos Peoes",LocalDate.parse("1998-09-18"), 0, 0, new TreeMap<Integer, Aluguer>());
         Proprietario p2 = new Proprietario(1,"zet", "Zet", "zet", "Rua dos Peoes",LocalDate.parse("1998-09-18"), 0, new ArrayList<Carro>(),new TreeMap<Integer, Aluguer>(),0,"Olá");
 
@@ -33,13 +33,12 @@ public class UmCarroJaApp implements Serializable {
         } catch (UtilizadorExistente e){
             System.out.println("fail registar Preacher");
         }
+    }
 
-        System.out.println("Bem Vindo!");
-        carregaMenu();
-        carregaFicheiro();
-        //carregaEstado();
+    public static void main(String[] args) {
 
-        executaMenuInicial();
+        UmCarroJaApp app = new UmCarroJaApp();
+        app.start();
 /*
         try {
             umCarroJa.gravaEstado();
@@ -47,7 +46,17 @@ public class UmCarroJaApp implements Serializable {
             System.out.println("Erro ao guardar");
         }*/
     }
-    private static void carregaFicheiro(){
+
+    private void start(){
+        System.out.println("Bem Vindo!");
+        carregaMenu();
+        //carregaFicheiro();
+        carregaEstado();
+
+        executaMenuInicial();
+    }
+
+    private void carregaFicheiro(){
         try {
             FileReader fr = new FileReader("/home/preacher/UmCarroJa/UmCarroJa.data");
 
@@ -58,7 +67,7 @@ public class UmCarroJaApp implements Serializable {
             System.out.println("Não encontrou ficheiro");
         }
     }
-    private static void carregaEstado() {
+    private void carregaEstado() {
         try {
             umCarroJa = UmCarroJa.initApp();
         }
@@ -76,7 +85,7 @@ public class UmCarroJaApp implements Serializable {
         }
     }
     
-    private static void carregaMenu() {
+    private void carregaMenu() {
         String[] inicial = {"Login", "Registar Utilizador"};
         String[] cliente = {"Consultar perfil", "Alterar perfil", "Alugar um carro", "Alterar localização", "Historial de Alugueres"};
         String[] proprietario = {"Consultar perfil", "Alterar perfil", "Registar um carro", "Alterar deposito de um carro", "Alterar preço/km de um carro", "Consultar classificação", "Historial de Alugueres"};
@@ -89,7 +98,7 @@ public class UmCarroJaApp implements Serializable {
         menuAluguerCriterio = new Menu(aluguercriterio);
     }
 
-    private static void executaMenuInicial() {
+    private void executaMenuInicial() {
         do {
             menuInicial.executaMenu();
             switch (menuInicial.getOp()) {
@@ -100,9 +109,17 @@ public class UmCarroJaApp implements Serializable {
                     registaUtilizador();
             }
         } while (menuInicial.getOp() != 0);
+
+        try {
+            this.umCarroJa.gravaEstado();
+        }
+        catch (IOException i){
+            i.printStackTrace();
+        }
+
     }
 
-    private static void executaMenuCliente() {
+    private void executaMenuCliente() {
         do {
             menuCliente.executaMenu();
             switch (menuCliente.getOp()) {
@@ -121,7 +138,7 @@ public class UmCarroJaApp implements Serializable {
         } while (menuCliente.getOp() != 0);
     }
 
-    private static void executaMenuProprietario() {
+    private void executaMenuProprietario() {
         do {
             menuProprietario.executaMenu();
             switch (menuProprietario.getOp()) {
@@ -149,7 +166,7 @@ public class UmCarroJaApp implements Serializable {
         } while (menuProprietario.getOp() != 0);
     }
 
-    private static void executaMenuAluguerTipo() {
+    private void executaMenuAluguerTipo() {
         do {
             menuAluguerTipo.executaMenu();
             switch (menuAluguerTipo.getOp()) {
@@ -160,7 +177,7 @@ public class UmCarroJaApp implements Serializable {
         } while (menuAluguerTipo.getOp() != 0);
     }
 
-    private static void login() {
+    private void login() {
         Scanner sc = new Scanner(System.in);
         String nif, password;
         System.out.println("NIF: ");
@@ -183,11 +200,11 @@ public class UmCarroJaApp implements Serializable {
         }
     }
 
-    private static void logout() {
+    private void logout() {
         umCarroJa.logout();
     }
 
-    private static void registaUtilizador() {
+    private void registaUtilizador() {
         Scanner sc = new Scanner(System.in);
         Utilizador u;
         int n, op;
@@ -236,7 +253,7 @@ public class UmCarroJaApp implements Serializable {
         }
     }
 
-    private static void consultaPerfil() {
+    private void consultaPerfil() {
         System.out.print("NIF: ");
         System.out.println(umCarroJa.getUtilizador().getNif());
         System.out.print("Email: ");
@@ -253,7 +270,7 @@ public class UmCarroJaApp implements Serializable {
         //System.out.println(umCarroJa.getUtilizador().getCarro());
     }
 
-    private static void alteraPerfil() {
+    private void alteraPerfil() {
         Scanner sc = new Scanner(System.in);
         Utilizador u = umCarroJa.getUtilizador();
         int n, op;
@@ -288,7 +305,7 @@ public class UmCarroJaApp implements Serializable {
 
     }
 
-    private static void registaCarro() {
+    private void registaCarro() {
         Scanner sc = new Scanner(System.in);
         Carro c;
         String matricula;
@@ -335,7 +352,7 @@ public class UmCarroJaApp implements Serializable {
 
     }
 
-    private static void alteraDeposito() {
+    private void alteraDeposito() {
         Scanner sc = new Scanner(System.in);
         Carro c = new Carro();
         List<Carro> carros = new ArrayList<Carro>();
@@ -363,7 +380,7 @@ public class UmCarroJaApp implements Serializable {
         umCarroJa.alteraDeposito(e-1, deposito);
     }
     
-    private static void alteraPrecoKm() {
+    private void alteraPrecoKm() {
         Scanner sc = new Scanner(System.in);
         Carro c = new Carro();
         List<Carro> carros = new ArrayList<Carro>();
@@ -391,11 +408,11 @@ public class UmCarroJaApp implements Serializable {
         umCarroJa.alteraPrecoKm(e-1, precoKm);
     }
 
-    public static void consultarClassificacao(){
+    public void consultarClassificacao(){
         umCarroJa.consultarClassificacao();
     }
 
-    public static void alugarCarro(){
+    public void alugarCarro(){
         Scanner sc = new Scanner(System.in);
         float x1, y1, x2, y2;
         int tipo, criterio;
@@ -452,15 +469,15 @@ public class UmCarroJaApp implements Serializable {
         }
     }
     
-    public static double calcDist(float a,float b, float c, float d){
+    public double calcDist(float a,float b, float c, float d){
         double dist = Math.sqrt((a-b)*(a-b) + (c-d)*(c-d));
         return dist;
     }
-    public static TreeMap<Integer,Carro> ordenaDCarros(TreeMap<Integer, Carro> carros){
+    public TreeMap<Integer,Carro> ordenaDCarros(TreeMap<Integer, Carro> carros){
         
         return carros;
     }
-    public static TreeMap<Integer,Carro> ordenaPCarros(TreeMap<Integer, Carro> carros){
+    public TreeMap<Integer,Carro> ordenaPCarros(TreeMap<Integer, Carro> carros){
         
         return carros;
     }

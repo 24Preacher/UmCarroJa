@@ -3,18 +3,14 @@ import Exceptions.CarroInexistente;
 import Exceptions.DadosIncorretos;
 import Exceptions.UtilizadorExistente;
 
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class UmCarroJa {
+public class UmCarroJa implements Serializable {
 
     public Map<Integer, Carro> carros;
     public Map<Integer, Utilizador> utilizadores;
@@ -88,14 +84,14 @@ public class UmCarroJa {
         return 2;
     }
     public void gravaEstado() throws IOException {
-        ObjectOutputStream o = new ObjectOutputStream (new FileOutputStream("UmCarroJa.data"));
+        ObjectOutputStream o = new ObjectOutputStream (new FileOutputStream("UmCarroJa.mydata"));
         o.writeObject(this);
         o.flush();
         o.close();
     }
     
     public static UmCarroJa initApp() throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("UmCarroJa.data"));
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("UmCarroJa.mydata"));
         UmCarroJa ucj = (UmCarroJa) ois.readObject();
 
         ois.close();
@@ -105,10 +101,9 @@ public class UmCarroJa {
     public List<Carro> getCarros() throws CarroInexistente {
         Proprietario p = (Proprietario) this.utilizador;
         if (p.getCarros().size() != 0) {
-             List<Carro> c = new ArrayList<Carro>();
+             List<Carro> c = new ArrayList<>();
                 for (Carro i : p.getCarros()) {
-                    Carro novo = (Carro) i;
-                    c.add(novo.clone());
+                    c.add(i.clone());
                 }
              this.utilizador = p;
              return c;

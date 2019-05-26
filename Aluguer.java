@@ -1,10 +1,11 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * Classe que armazena a informacao de um Aluguer.
  */
-public class Aluguer {
+public class Aluguer implements Serializable {
 
     private int idAluguer;
     private int idProprietario;
