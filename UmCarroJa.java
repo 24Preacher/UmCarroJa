@@ -129,4 +129,42 @@ public class UmCarroJa implements Serializable {
     public Carro carroTipo(int n){
         return this.carros.get(n);
     }
+
+    public void ParserFileStor(){
+        try (BufferedReader br = new BufferedReader(new FileReader("UmCarroJa.data"))) {
+            String line;
+            boolean flagLogs = false;
+
+            while (!flagLogs){
+                line = br.readLine();
+                if (line.equals("Logs"))
+                    flagLogs = true;
+            }
+
+            while ((line = br.readLine()) != null){
+                String [] fst_arg = line.split(":");
+
+                switch (fst_arg[0]){
+                    case "NovoProp":{
+                        String [] content = fst_arg[1].split(",");
+                        Proprietario p = new Proprietario(Integer.parseInt(content[1]),content[2],content[0],"",content[3],null);
+                        this.utilizadores.put(p.getNif(), p);
+                        break;
+                    }
+                    case "NovoCliente":{
+                        String [] content = fst_arg[1].split(",");3
+                        Cliente c = new Cliente(Integer.parseInt(content[1]),content[2],content[0],"",content[3],null);
+                        c.setLocalizacaoX(Float.parseFloat(content[4]));
+                        c.setLocalizacaoY(Float.parseFloat(content[5]));
+
+                        this.utilizadores.put(c.getNif(), c);
+                        break;
+                    }
+                }
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }
